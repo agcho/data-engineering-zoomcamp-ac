@@ -1,0 +1,32 @@
+id: gcp_yellow_taxi_hw
+namespace: zoomcamp
+description: Upload yellow taxi Parquet files Jan → Jun to GCS
+
+inputs:
+  - id: month
+    type: SELECT
+    displayName: Select month
+    values: ["01", "02", "03", "04", "05", "06"]
+    defaults: "01"
+
+variables:
+  file: "yellow_tripdata_2024-{{inputs.month}}.parquet"
+  gcs_file: "gs://{{kv('GCP_BUCKET_NAME_HW')}}/{{vars.file}}"
+
+tasks:
+  - id: data
+    type: io.kestra.plugin.core.http.Download
+    uri: https://d37ci6vzurychx.cloudfront.net/trip-data/{{ render(vars.file) }}
+
+  - id: cloud_storage
+    type: io.kestra.plugin.gcp.gcs.Upload
+    from: "{{ outputs.data.uri }}"
+    to: "{{ render(vars.gcs_file) }}"
+
+pluginDefaults:
+  - type: io.kestra.plugin.gcp
+    values:
+      serviceAccount: "{{kv('GCP_CREDS')}}"
+      projectId: "{{kv('GCP_PROJECT_ID')}}"
+      location: "{{kv('GCP_LOCATION')}}"
+      bucket: "{{kv('GCP_BUCKET_NAME_HW')}}"

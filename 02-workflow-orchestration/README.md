@@ -42,3 +42,4 @@ FROM (
     SELECT COUNT(*) AS total_rows
     FROM `dtc-de-course-486019.zoomcamp.green_tripdata_2020_12`
 ) green
+
