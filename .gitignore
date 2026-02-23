@@ -216,3 +216,8 @@ duckdb.db
 *.duckdb
 *.db
 
+
+# DuckDB database files
+duckdb.db
+*.duckdb
+
