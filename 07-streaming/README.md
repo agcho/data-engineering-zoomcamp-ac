@@ -40,3 +40,15 @@ Submit jobs with: docker exec -it workshop-jobmanager-1 flink run -py /opt/src/j
 > docker exec -it workshop-postgres-1 psql -U postgres -d workshop
 > docker exec -it workshop-jobmanager-1 flink run -py /opt/src/job/q4_tumbling.py
 > docker compose exec jobmanager ./bin/flink run -py /opt/src/job/pass_through_job.py --pyFiles /opt/src -d
+> 42
+
+## Q5. Session window - longest streak
+> docker exec -it workshop-jobmanager-1 flink run -py /opt/src/job/q5_session.py
+> SELECT MAX(num_trips) FROM trips_session;
+> 52
+
+
+## Q6. Tumbling window - largest tip 
+> docker exec -it workshop-jobmanager-1 flink run -py /opt/src/job/q6_tumbling.py
+> SELECT hour_start FROM tips_hourly ORDER BY total_tip DESC LIMIT 1;
+> 2025-10-16 18:00:00
